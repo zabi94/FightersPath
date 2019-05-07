@@ -1,5 +1,9 @@
 package zabi.minecraft.fighterspath;
 
+import net.minecraft.init.Blocks;
+import net.minecraft.init.PotionTypes;
+import net.minecraft.item.Item;
+import net.minecraft.potion.PotionHelper;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
@@ -27,6 +31,7 @@ public class FightersPath {
 	@EventHandler
 	public void init(FMLInitializationEvent evt) {
 		SimpleCapability.init(PlayerStats.class, Reference.ID, PlayerStats.CAP, new PlayerStats());
+		PotionHelper.addMix(PotionTypes.AWKWARD, Item.getItemFromBlock(Blocks.IRON_BLOCK), Events.potionType);
 		proxy.setupHud();
 	}
 	

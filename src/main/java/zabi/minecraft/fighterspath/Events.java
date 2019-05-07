@@ -28,6 +28,7 @@ import zabi.minecraft.fighterspath.potion.PotionUnlock;
 public class Events {
 
 	private static PotionUnlock potion = null;
+	public static PotionType potionType = null;
 
 	private static final UUID ARMOR = UUID.fromString("ad1e1594-3f45-4455-a9b6-26d18d169d19");
 	private static final UUID MOVEMENT_SPEED = UUID.fromString("455b75b7-afc8-4482-872e-1882056c08b9");
@@ -40,9 +41,9 @@ public class Events {
 
 	@SubscribeEvent
 	public static void registerPotionType(RegistryEvent.Register<PotionType> evt) {
-		PotionType pt = new PotionType(new PotionEffect(potion));
-		pt.setRegistryName(new ResourceLocation(Reference.ID, "fighters_brew"));
-		evt.getRegistry().register(pt);
+		potionType = new PotionType(new PotionEffect(potion));
+		potionType.setRegistryName(new ResourceLocation(Reference.ID, "fighters_brew"));
+		evt.getRegistry().register(potionType);
 	}
 
 	@SubscribeEvent
