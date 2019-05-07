@@ -1,0 +1,16 @@
+[
+{
+  "modid": "fighterspath",
+  "name": "Fighter's Path",
+  "description": "Punch people and blocks harder",
+  "version": "${version}",
+  "mcversion": "${mcversion}",
+  "url": "",
+  "updateUrl": "",
+  "authorList": ["Zabi94"],
+  "credits": "This mod was commissioned by Leonardo",
+  "logoFile": "",
+  "screenshots": [],
+  "dependencies": []
+}
+]
