@@ -6,6 +6,7 @@ import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.ai.attributes.IAttributeInstance;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.EntityEquipmentSlot.Type;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
@@ -188,7 +189,7 @@ public class Events {
 	}
 
 	public static boolean isArmorless(LivingEquipmentChangeEvent evt, EntityPlayer p) {
-		if (!evt.getTo().isEmpty()) {
+		if (!evt.getTo().isEmpty() && evt.getSlot().getSlotType() == Type.ARMOR) {
 			return false;
 		}
 		return isArmorless(p);
