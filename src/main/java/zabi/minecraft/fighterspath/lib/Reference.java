@@ -5,6 +5,6 @@ public class Reference {
 	public static final String ID = "fighterspath";
 	public static final String VER = "@VERSION@";
 	public static final String FINGERPRINT = "@FINGERPRINT@";
-	public static final String DEPS = "required-after:minerva@[1.0.10,1.0.11);";
+	public static final String DEPS = "required-after:minerva@[1.0.10,);";
 	
 }
