@@ -101,7 +101,7 @@ public class Events {
 		if (evt.getSource().getTrueSource() instanceof EntityPlayer) {
 			EntityPlayer p = (EntityPlayer) evt.getSource().getTrueSource();
 			int lvl = p.getCapability(PlayerStats.CAP, null).level;
-			if (p.getActiveHand() != EnumHand.OFF_HAND && p.getHeldItemMainhand().isEmpty()) {
+			if (p.getActiveHand() != EnumHand.OFF_HAND && p.getHeldItemMainhand().isEmpty() && evt.getAmount() > 0) {
 				evt.setAmount(evt.getAmount() + lvl);
 			}
 		}
