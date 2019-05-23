@@ -10,7 +10,7 @@ public class ClientProxy extends CommonProxy {
 
 	@Override
 	public void setupHud() {
-		HudController.registerNewComponent(new ScoreHud(), 0, 52, 181, 5, EnumHudAnchor.CENTER_ABSOLUTE, EnumHudAnchor.END_ABSOLUTE, true);
+		HudController.registerNewComponent(ScoreHud.INSTANCE, 0, 52, 181, 5, EnumHudAnchor.CENTER_ABSOLUTE, EnumHudAnchor.END_ABSOLUTE, true);
 	}
 	
 	@Override
