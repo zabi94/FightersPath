@@ -17,6 +17,7 @@ import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.event.entity.living.LivingEquipmentChangeEvent;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingJumpEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
+import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent.BreakSpeed;
 import net.minecraftforge.event.entity.player.PlayerEvent.HarvestCheck;
 import net.minecraftforge.event.world.BlockEvent.HarvestDropsEvent;
@@ -60,6 +61,20 @@ public class Events {
 				}
 				player.motionY += 0.125f * ps.level / 5f;
 			}
+		}
+	}
+
+	@SubscribeEvent
+	public static void onPlayerCloned(PlayerEvent.Clone evt) {
+		if (!evt.getEntityPlayer().world.isRemote) {
+			PlayerStats old = evt.getOriginal().getCapability(PlayerStats.CAP, null);
+			PlayerStats ply = evt.getEntityPlayer().getCapability(PlayerStats.CAP, null);
+			ply.hasPotion = old.hasPotion;
+			ply.level = old.level;
+			ply.score = old.score;
+			ply.ticksSprinting = old.ticksSprinting;
+			ply.track = old.track;
+			ply.markDirty((byte) 3);
 		}
 	}
 
@@ -194,7 +209,7 @@ public class Events {
 		}
 		return isArmorless(p);
 	}
-	
+
 	public static boolean checkArmor(ItemStack head, ItemStack chest, ItemStack pants, ItemStack shoes) {
 		return head.isEmpty() && chest.isEmpty() && pants.isEmpty() && shoes.isEmpty();
 	}

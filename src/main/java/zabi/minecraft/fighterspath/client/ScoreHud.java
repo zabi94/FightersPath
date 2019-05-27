@@ -7,6 +7,8 @@ import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.entity.player.PlayerEvent;
+import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent.ClientTickEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent.Phase;
@@ -26,7 +28,7 @@ public class ScoreHud implements IHudComponent {
 	private int alpha = FADE_TIME;
 	private int current_time = HOLD_TIME;
 
-	private float lastPc = 0;
+	private int lastPixelsFilled = 0;
 
 	private ScoreHud() {
 		MinecraftForge.EVENT_BUS.register(this);
@@ -45,13 +47,19 @@ public class ScoreHud implements IHudComponent {
 			}
 			if (Minecraft.getMinecraft().player != null) {
 				PlayerStats ps = Minecraft.getMinecraft().player.getCapability(PlayerStats.CAP, null);
-				float exp = getPercentageFilled(ps);
-				if (Math.abs(exp - lastPc) > 0.01) {
+				int exp = (int) (getPercentageFilled(ps) * 181);
+				if (exp != lastPixelsFilled) {
 					current_time = HOLD_TIME;
-					lastPc = exp;
+					lastPixelsFilled = exp;
 				}
 			}
 		}
+	}
+	
+	@SubscribeEvent(priority = EventPriority.LOW)
+	public void onRespawn(PlayerEvent.Clone evt) {
+		current_time = HOLD_TIME;
+		lastPixelsFilled = (int) (181 * getPercentageFilled(evt.getOriginal().getCapability(PlayerStats.CAP, null)));
 	}
 
 	@Override
