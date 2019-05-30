@@ -54,7 +54,7 @@ public class Events {
 			EntityPlayer player = (EntityPlayer) evt.getEntityLiving();
 			PlayerStats ps = player.getCapability(PlayerStats.CAP, null);
 			if (isArmorless(player)) {
-				if (!evt.getEntityLiving().world.isRemote && ps.track && applies(player)) {
+				if (!evt.getEntityLiving().world.isRemote && ps.hasPotion && ps.track && applies(player)) {
 					ps.score+= ModConfig.scorePerJump;
 					ps.markDirty((byte) 3);
 					checkLevelling(ps, player);
