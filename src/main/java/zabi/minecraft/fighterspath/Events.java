@@ -11,7 +11,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.potion.PotionType;
-import net.minecraft.util.EnumHand;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.event.entity.living.LivingEquipmentChangeEvent;
@@ -34,6 +33,7 @@ public class Events {
 
 	private static final UUID ARMOR = UUID.fromString("ad1e1594-3f45-4455-a9b6-26d18d169d19");
 	private static final UUID MOVEMENT_SPEED = UUID.fromString("455b75b7-afc8-4482-872e-1882056c08b9");
+	private static final UUID STRENGTH = UUID.fromString("455baab7-afc8-4482-872e-1882056c08b9");
 
 	@SubscribeEvent
 	public static void registerPotion(RegistryEvent.Register<Potion> evt) {
@@ -111,17 +111,6 @@ public class Events {
 		}
 	}
 
-	@SubscribeEvent
-	public static void onHurtEvent(LivingHurtEvent evt) {
-		if (evt.getSource().getTrueSource() instanceof EntityPlayer) {
-			EntityPlayer p = (EntityPlayer) evt.getSource().getTrueSource();
-			int lvl = p.getCapability(PlayerStats.CAP, null).level;
-			if (p.getActiveHand() != EnumHand.OFF_HAND && p.getHeldItemMainhand().isEmpty() && evt.getAmount() > 0) {
-				evt.setAmount(evt.getAmount() + lvl);
-			}
-		}
-	}
-
 	@SubscribeEvent(priority = EventPriority.LOWEST)
 	public static void onBlockDug(HarvestDropsEvent evt) {
 		if (evt.getHarvester() instanceof EntityPlayer && !evt.getHarvester().world.isRemote) {
@@ -160,6 +149,22 @@ public class Events {
 			updateArmorDependentValues((EntityPlayer) evt.getEntityLiving(), evt.getEntityLiving().getCapability(PlayerStats.CAP, null).level, evt);
 		}
 	}
+	
+	@SubscribeEvent
+	public static void onDifferentItemSelected(LivingEquipmentChangeEvent evt) {
+		if (evt.getEntityLiving() instanceof EntityPlayer && evt.getSlot().getSlotType() == Type.HAND) {
+			EntityPlayer p = (EntityPlayer) evt.getEntityLiving();
+			p.getAttributeMap().getAttributeInstance(SharedMonsterAttributes.ATTACK_DAMAGE).removeModifier(STRENGTH);
+			if (p.getHeldItemMainhand().isEmpty() && p.getHeldItemOffhand().isEmpty()) {
+				applyPunchModifiers(p);
+			}
+		}
+	}
+
+	private static void applyPunchModifiers(EntityPlayer p) {
+		int level = p.getCapability(PlayerStats.CAP, null).level;
+		p.getAttributeMap().getAttributeInstance(SharedMonsterAttributes.ATTACK_DAMAGE).applyModifier(new AttributeModifier(STRENGTH, "fighterspath_dmg", level, 0));
+	}
 
 	public static void checkLevelling(PlayerStats ps, EntityPlayer p) {
 		ps.level = getLevelFromScore(ps.score);
@@ -168,6 +173,11 @@ public class Events {
 		}
 		ps.markDirty((byte) 1);
 		updateArmorDependentValues(p, ps.level, null);
+		IAttributeInstance strength_attr = p.getAttributeMap().getAttributeInstance(SharedMonsterAttributes.ATTACK_DAMAGE);
+		strength_attr.removeModifier(STRENGTH);
+		if (p.getHeldItemMainhand().isEmpty() && p.getHeldItemOffhand().isEmpty()) {
+			applyPunchModifiers(p);
+		}
 	}
 
 
