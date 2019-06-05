@@ -74,7 +74,7 @@ public class Events {
 			ply.score = old.score;
 			ply.ticksSprinting = old.ticksSprinting;
 			ply.track = old.track;
-			ply.markDirty((byte) 3);
+			checkLevelling(ply, evt.getEntityPlayer());
 		}
 	}
 
