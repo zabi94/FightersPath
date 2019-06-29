@@ -16,10 +16,12 @@ import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.event.entity.living.LivingEquipmentChangeEvent;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingJumpEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
+import net.minecraftforge.event.entity.player.CriticalHitEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent.BreakSpeed;
 import net.minecraftforge.event.entity.player.PlayerEvent.HarvestCheck;
 import net.minecraftforge.event.world.BlockEvent.HarvestDropsEvent;
+import net.minecraftforge.fml.common.eventhandler.Event.Result;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent.PlayerTickEvent;
@@ -87,6 +89,18 @@ public class Events {
 				ps.score+= (ModConfig.scorePerDamageDealt * evt.getAmount());
 				ps.markDirty((byte) 3);
 				checkLevelling(ps, player);
+			}
+		}
+	}
+	
+	@SubscribeEvent
+	public static void setCrit(CriticalHitEvent evt) {
+		if (!evt.getEntityLiving().world.isRemote) {
+			PlayerStats ps = evt.getEntityPlayer().getCapability(PlayerStats.CAP, null);
+			if (ps.hasPotion && evt.getEntityPlayer().getHeldItemMainhand().isEmpty() && applies(evt.getEntityPlayer())) {
+				if (evt.getEntityPlayer().getRNG().nextInt(20) < ps.level) {
+					evt.setResult(Result.ALLOW);
+				}
 			}
 		}
 	}
