@@ -105,7 +105,7 @@ public class Events {
 		if (evt.getEntityPlayer().getHeldItemMainhand().isEmpty()) {
 			int level = evt.getEntityPlayer().getCapability(PlayerStats.CAP, null).level;
 			int required = 2 * evt.getTargetBlock().getBlock().getHarvestLevel(evt.getTargetBlock());
-			if (level >= required) {
+			if (level > required) {
 				evt.setCanHarvest(true);
 			}
 		}
