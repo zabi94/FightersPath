@@ -31,7 +31,7 @@ public class FightersPath {
 	@EventHandler
 	public void init(FMLInitializationEvent evt) {
 		SimpleCapability.init(PlayerStats.class, Reference.ID, PlayerStats.CAP, new PlayerStats());
-		PotionHelper.addMix(PotionTypes.AWKWARD, Item.getItemFromBlock(Blocks.IRON_BLOCK), Events.potionType);
+		PotionHelper.addMix(PotionTypes.STRENGTH, Item.getItemFromBlock(Blocks.IRON_BLOCK), Events.potionType);
 		proxy.setupHud();
 	}
 	
