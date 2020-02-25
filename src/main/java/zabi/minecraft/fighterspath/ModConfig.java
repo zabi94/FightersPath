@@ -31,6 +31,9 @@ public class ModConfig {
 	@Config.Comment("When set to true, creative players won't increase their score")
 	public static boolean preventCreativePlayers = false;
 	
+	@Config.Comment("When set to true, players will have an increased digging speed/level when bare handed")
+	public static boolean digSpeedPower = false;
+	
 	@SubscribeEvent
 	public static void configReload(ConfigChangedEvent evt) {
 		if (evt.getModID().equals(Reference.ID)) {

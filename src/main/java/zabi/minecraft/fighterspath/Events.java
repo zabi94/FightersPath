@@ -107,7 +107,7 @@ public class Events {
 
 	@SubscribeEvent
 	public static void mineSpeed(BreakSpeed evt) {
-		if (evt.getEntityPlayer().getHeldItemMainhand().isEmpty()) {
+		if (evt.getEntityPlayer().getHeldItemMainhand().isEmpty() && ModConfig.digSpeedPower) {
 			int level = evt.getEntityPlayer().getCapability(PlayerStats.CAP, null).level;
 			double pc = 1 + level * 0.7;
 			evt.setNewSpeed((float) (evt.getNewSpeed() * pc));
@@ -116,7 +116,7 @@ public class Events {
 
 	@SubscribeEvent
 	public static void mineLevel(HarvestCheck evt) {
-		if (evt.getEntityPlayer().getHeldItemMainhand().isEmpty()) {
+		if (evt.getEntityPlayer().getHeldItemMainhand().isEmpty() && ModConfig.digSpeedPower) {
 			int level = evt.getEntityPlayer().getCapability(PlayerStats.CAP, null).level;
 			int required = 2 * evt.getTargetBlock().getBlock().getHarvestLevel(evt.getTargetBlock());
 			if (level > required) {
